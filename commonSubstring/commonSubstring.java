@@ -31,6 +31,27 @@ public class commonSubstring {
 	 
 	        //System.out.println("\nLongest Common Substring : "+ result);
 	    }
+     public String[][] merge(String art1[][], String art2[][])
+        {
+            String article[][]=new String[art1.length+art2.length][4];
+            int i=0;
+            for(i=0;i<art1.length;i++)
+            {
+                for(int j=0;j<4;j++)
+                {
+                    article[i][j]=art1[i][j];
+                }
+            }
+            for(int k=0;k<art2.length;k++)
+            {
+                for(int j=0;j<4;j++)
+                {
+                    article[i][j]=art2[k][j];
+                    i++;
+                }
+            }
+            return article;     
+        }
 	 
 	 public void store(String[] suffixarr, int[] index, String doc, String str)
 	 {
