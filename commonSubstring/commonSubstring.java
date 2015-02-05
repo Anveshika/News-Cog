@@ -2,65 +2,91 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
-
+import java.util.ArrayList;
 
 public class commonSubstring {
     
      public static void main(String[] args) throws IOException
         {    
          
+         //arraylist for storing the final list of common strings in the two articles
+            ArrayList<String> finalart = new ArrayList<String>();           
+            
             commonSubstring obj = new commonSubstring();
+            
             System.out.println("Longest Common Substring Algorithm Test\n");
             Scanner in=new Scanner(System.in);
             
+            //input first very large string
             System.out.println("\nEnter string 1");
             String str1 ="";
+            
             while(in.hasNextLine())
             {
                 String str=in.nextLine();
+                
+              //string input terminates at finding "end" string
                 if(str.equals("end"))
                     break;
                 str1=str1+str;
             }
-            str1.toLowerCase();
-            //System.out.println(str1);
+            str1 = str1.toLowerCase();   
+            System.out.println(str1);
      
+            //input second very large string
             System.out.println("\nEnter string 2");
             String str2 ="";
             while(in.hasNextLine())
             {
                 String str="";
                 str=in.nextLine();
+                
+                //string input terminates at finding "end" string
                 if(str.equals("end"))
                     break;
                 str2=str2+str;
             }
-            str2.toLowerCase();
+            str2 = str2.toLowerCase();
             in.close();
+            
+            //class for generating the suffix arrays in sorted order 
             SuffixArray suffixarray1 = new SuffixArray(str1);
-            suffixarray1.createSuffixArray();           
+            suffixarray1.createSuffixArray();   
+            
+            //storing the generated suffix array into a 2 dimensional array along with other details
             String suffix1[][]=obj.store(suffixarray1.getsuffix(), suffixarray1.getindex(),"1");
             
+            //processing for second article
             SuffixArray suffixarray2 = new SuffixArray(str2);
             suffixarray2.createSuffixArray();
             String suffix2[][]=obj.store(suffixarray2.getsuffix(), suffixarray2.getindex(),"2");
             
+            //merging the two lists of suffix arrays of two input large articles
             String suffix[][]=obj.merge(suffix1, suffix2);
             
-            Arrays.sort(suffix, new ColumnComparator(0));           
-            for(int i=0;i<suffix.length;i++)
+            //sorting merged suffix array list
+            Arrays.sort(suffix, new ColumnComparator(0));              
+            
+            
+            //calling function to compare the strings only if the two strings are from different documents
+            for(int j = 0; j<suffix.length-1; j++)
             {
-                System.out.println();
-                for(int j=0;j<4;j++)
+                if(!suffix[j][2].equals(suffix[j+1][2]))
                 {
-                    System.out.print(suffix[i][j]+" ");
-                }
+                    String s = obj.compare(suffix[j][0], suffix[j+1][0]);
+                    
+                    if(!s.equals(""))
+                        finalart.add(s);
+                }           
+                
             }
             
-            //LongestSubstring obj = new LongestSubstring(); 
-            //String result = bstring(str1, str2);
-     
-            //System.out.println("\nLongest Common Substring : "+ result);
+            //displaying the common substrings generated
+            for(int i=0;i<finalart.size();i++)
+            {
+                System.out.println();
+               System.out.println(finalart.get(i));
+            }
         }
      public String[][] merge(String art1[][], String art2[][])
         {
@@ -84,6 +110,8 @@ public class commonSubstring {
             return article;     
         }
      
+     //storing the suffix arrays of one article along with details like doc number, 
+     //length and index into a 2 dimensional array
      public String[][] store(String[] suffixarr, int[] index, String doc)
      {
          String[][] arr = new String[suffixarr.length][4];
@@ -96,16 +124,50 @@ public class commonSubstring {
              arr[i][3] = ""+ suffixarr[i].length();          
          }
          return arr;
-     }   
+     }
+     
+     //function to compare two small string and give the longest common substring
+     public String compare(String S1, String S2)
+     {
+         int Start = 0;
+         int Max = 0;
+        
+         for (int i = 0; i < S1.length(); i++)
+         {
+             for (int j = 0; j < S2.length(); j++)
+             {
+                 int x = 0;
+                 
+                 while (S1.charAt(i + x) == S2.charAt(j + x))
+                 {                  
+                     x++;
+                     if (((i + x) >= S1.length()) || ((j + x) >= S2.length())) break;
+                 }             
+               
+                 if (x > Max)
+                 {
+                     Max = x;
+                     Start = i;                  
+                 }             
+              }
+         }
+         return S1.substring(Start, (Start + Max));
+     }
+
 
 }
-class ColumnComparator implements Comparator {
+
+class ColumnComparator implements Comparator 
+{
     int columnToSort;
-    ColumnComparator(int columnToSort) {
+    ColumnComparator(int columnToSort) 
+    {
         this.columnToSort = columnToSort;
     }
+    
     //overriding compare method
-    public int compare(Object o1, Object o2) {
+    public int compare(Object o1, Object o2) 
+    {
         String[] row1 = (String[]) o1;
         String[] row2 = (String[]) o2;
         //compare the columns to sort
@@ -170,15 +232,8 @@ class SuffixArray
             }
             suffix[ back + 1 ] = key;
             index[back + 1 ] = keyindex;
-        }
-        
-       // return suffix;
- 
-       /* System.out.println("SUFFIX \t INDEX");
-        for (int iterate = 0; iterate < length; iterate++)
-        {       
-            System.out.println(suffix[iterate] + "\t" + index[iterate]);
-        }*/
+        }        
+      
     }
     
     public String[] getsuffix()
@@ -189,17 +244,8 @@ class SuffixArray
     public int[] getindex()
     {
         return index;
-    }
- 
- 
-    /*public static void main(String...arg)throws IOException
-    {
-        String text = "";
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter the Text String ");
-        text = reader.readLine();
- 
-        SuffixArray suffixarray = new SuffixArray(text);
-        suffixarray.createSuffixArray();
-    }   */
+    } 
+    
 }
+
+
