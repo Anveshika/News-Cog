@@ -1,23 +1,32 @@
 <!DOCTYPE html>
 <html>
 <body>
-<div id="playground">bhavana</div>
-<!-- <div id="id01">bhavana</div> -->
+<div id="playground">The Aam Aadmi Party (AAP) surged to a massive win in the Delhi assembly polls on Tuesday, setting up a second stint for Arvind Kejriwal as chief minister and leaving the BJP licking its wounds in the city from which it rules the country.
+ <br>
+ <br>
+The AAP was leading in 64 seats of the 70-member House, surpassing its own wildest expectations and beyond even the most optimistic exit polls, while the Bharatiya Janata Party (BJP) slumped to a distant second place with leads in just five seats.
+ 
+
+
+</div>
+ <!-- <div id="id01"></div>  -->
 <script type="text/javascript" src="hilitor.js"></script>
-<script src="myArray.json"></script>
+<script src="CommonString.json"></script>
 <script>
 
-	myFunction(myArray);
+	myFunction(CommonString);
 
 	function myFunction(arr) {
 		var myHilitor2;
 	    var out = [];
 	    var i;
-	    for(i = 0; i < arr.length; i++) 
+	    for(i = 0; i < arr[0].String.length; i++) 
 	    {
-	        out[i]= arr[i].String[0];
+	        out[i]= arr[0].String[i];
+	        //document.getElementById("id01").innerHTML=out[i];
 	        var input = out[i];  
 	   		myHilitor2 = new Hilitor("playground");
+	   		myHilitor2.setMatchType("left");
 	    	myHilitor2.apply(input);
 	    }
 	    
