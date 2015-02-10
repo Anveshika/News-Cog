@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="playground">bhavana</div>
+<!-- <div id="id01">bhavana</div> -->
+<script type="text/javascript" src="hilitor.js"></script>
+<script src="myArray.json"></script>
+<script>
+
+	myFunction(myArray);
+
+	function myFunction(arr) {
+		var myHilitor2;
+	    var out = [];
+	    var i;
+	    for(i = 0; i < arr.length; i++) 
+	    {
+	        out[i]= arr[i].String[0];
+	        var input = out[i];  
+	   		myHilitor2 = new Hilitor("playground");
+	    	myHilitor2.apply(input);
+	    }
+	    
+	}
+
+
+</script>
+
+
+
+</body>
+</html>

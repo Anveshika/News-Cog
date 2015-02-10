@@ -1,0 +1,20 @@
+var myArray = [
+{
+"Leng":["1","2","3","4"],
+"String":["bhavana"],
+"display": "JavaScript Tutorial",
+"url": "http://www.w3schools.com/js/default.asp"
+},
+{
+"Leng":["2","2","3","4"],
+"String":["rohan"],
+"display": "HTML Tutorial",
+"url": "http://www.w3schools.com/html/default.asp"
+},
+{
+"Leng":["4","2","3","4"],
+"String":["naresh"],
+"display": "CSS Tutorial",
+"url": "http://www.w3schools.com/css/default.asp"
+}
+];
