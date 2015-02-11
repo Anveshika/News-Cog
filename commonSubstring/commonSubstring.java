@@ -3,10 +3,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 public class commonSubstring {
 
@@ -68,8 +72,8 @@ public class commonSubstring {
         String suffix[][]=obj.merge(suffix1, suffix2);
 
         //sorting merged suffix array list
-        Arrays.sort(suffix, new ColumnComparator(0));              
-
+        Arrays.sort(suffix, new ColumnComparator(0));
+        Hashtable<String, String[]> data=new Hashtable<String, String[]>();
 
         //calling function to compare the strings only if the two strings are from different documents
         try
@@ -88,9 +92,25 @@ public class commonSubstring {
 
                     if(!s.equals(""))
                     {
+                        if(data.containsKey(s))
+                        {
+                            String array[]=data.get(s);
+                            array[0]=array[0]+", "+(suffix[j][0].indexOf(s)+Integer.parseInt(suffix[j+1][1]));
+                            array[1]=array[1]+", "+(suffix[j+1][0].indexOf(s)+Integer.parseInt(suffix[j+1][1]));
+                            array[3]=""+(Integer.parseInt(array[3])+1);
+                        }
+                        else
+                        {
+                            String array[]=new String[4];
+                            array[0]=""+(suffix[j][0].indexOf(s)+Integer.parseInt(suffix[j+1][1]));
+                            array[1]=""+(suffix[j+1][0].indexOf(s)+Integer.parseInt(suffix[j+1][1]));
+                            array[2]=""+s.length();
+                            array[3]=""+1;
+                            data.put(s, array);
+                        }
                         common.add(s);
-                        d1Index.add(suffix[j][0].indexOf(s));
-                        d2Index.add(suffix[j+1][0].indexOf(s));
+                        d1Index.add(suffix[j][0].indexOf(s)+Integer.parseInt(suffix[j+1][1]));
+                        d2Index.add(suffix[j+1][0].indexOf(s)+Integer.parseInt(suffix[j+1][1]));
                         length.add(s.length());
                     }
                 }
@@ -108,13 +128,24 @@ public class commonSubstring {
         {
             ex.printStackTrace();
         }
-
-        //displaying the common substrings generated
-//      for(int i=0;i<finalart.size();i++)
-//      {
-//          System.out.println();
-//          System.out.println(finalart.get(i));
-//      }
+        String csv="data.csv";
+        CSVWriter writer=new CSVWriter(new FileWriter(csv));
+        Enumeration<String> keys=data.keys();
+        String title[]={"String","Index from article 1","String from article 2","Length","Count"};
+        writer.writeNext(title);
+        for(int i=0;i<data.size();i++)
+        {
+            String key=keys.nextElement();
+            String arr[]=new String[5];
+            String a[]=data.get(key);
+            arr[0]=key;
+            for(int j=1;j<5;j++)
+            {
+                arr[j]=a[j-1];
+            }
+            writer.writeNext(arr);
+        }
+        writer.close();
     }
     public String[][] merge(String art1[][], String art2[][])
     {
