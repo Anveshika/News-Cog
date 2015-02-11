@@ -1,18 +1,21 @@
-import java.io.File;
+import java.io.*;
 import java.io.FileNotFoundException;
 import java.util.Hashtable;
 import java.util.Scanner;
-
+import java.util.*;
 class Preprocessing
 {
 	public static void main(String[] args)
 	{
 		Preprocessing obj=new Preprocessing();
+		Hashtable<String,int[]> h=new Hashtable<String,int[]>();
 		Hashtable<String, String> swords=obj.getStopWords();
 		String art1=obj.getFileData("Article 1.txt");
 		String art2=obj.getFileData("Article 2.txt");
 		art1=obj.doPreprocessing(art1, swords);
 		art2=obj.doPreprocessing(art2, swords);
+		dictionary(h,art1,art2);
+		 System.out.println(similarity(h));
 	}
 	public String doPreprocessing(String art,Hashtable<String, String> swords)
 	{
@@ -75,4 +78,63 @@ class Preprocessing
 		}
 		return swords;
 	}
+	
+	public static void dictionary(Hashtable<String,int[]> h,String s1, String s2)
+	{
+		//Hashtable<String,int[]> h=new Hashtable<String,int[]>();
+		
+		String[] s3=s1.split(" ");
+		String[] s4=s2.split(" ");
+				for(int i=0;i<s3.length;i++)
+				{
+					int[] a=new int[2];
+					if(!h.containsKey(s3[i]))
+					{
+					 a[0]=1;
+					 h.put(s3[i], a);
+					}
+					else
+					{
+						a=h.get(s3[i]);
+						a[0]++;
+						h.put(s3[i], a);
+					}
+				}
+				for(int i=0;i<s4.length;i++)
+				{
+					int[] a=new int[2];
+					if(!h.containsKey(s4[i]))
+					{
+					 a[1]=1;
+					 h.put(s4[i], a);
+					}
+					else
+					{
+						a=h.get(s4[i]);
+						a[1]++;
+						h.put(s4[i], a);
+					}
+				}
+				
+	}
+
+	public static double similarity(Hashtable<String,int[]> h)
+	 {
+		Enumeration s=h.keys();
+		String str;
+		int[] b=new int[1];
+		double t=0,m=0,n=0;
+		long total;
+		while(s.hasMoreElements()) {
+	        str = (String) s.nextElement();
+	        b=h.get(str);
+	       // System.out.println(str+"("+b[0]+","+b[1]+")");
+	        t=t+b[0]*b[1];
+	        m=m+(b[0]*b[0]);
+	        n=n+(b[1]*b[1]);
+	        }
+		//System.out.println(m);
+		total=Math.round(t/(Math.sqrt(m)*Math.sqrt(n)));
+		return total;
+	 }
 }
