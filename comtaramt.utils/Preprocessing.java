@@ -8,14 +8,23 @@ class Preprocessing
 	public static void main(String[] args)
 	{
 		Preprocessing obj=new Preprocessing();
+		Scanner in=new Scanner(System.in);
+		System.out.println("Enter name of file having first article: ");
+		String file1=in.nextLine();
+		System.out.println("Enter name of file having second article: ");
+		String file2=in.nextLine();
+		obj.getSimilarity(file1, file2);
+	}
+	public void getSimilarity(String file1, String file2)
+	{
 		Hashtable<String,int[]> h=new Hashtable<String,int[]>();
-		Hashtable<String, String> swords=obj.getStopWords();
-		String art1=obj.getFileData("Article 1.txt");
-		String art2=obj.getFileData("Article 2.txt");
-		art1=obj.doPreprocessing(art1, swords);
-		art2=obj.doPreprocessing(art2, swords);
+		Hashtable<String, String> swords=getStopWords();
+		String art1=getFileData(file1);
+		String art2=getFileData(file2);
+		art1=doPreprocessing(art1, swords);
+		art2=doPreprocessing(art2, swords);
 		dictionary(h,art1,art2);
-		 System.out.println(similarity(h));
+		System.out.println(similarity(h));
 	}
 	public String doPreprocessing(String art,Hashtable<String, String> swords)
 	{
@@ -124,7 +133,7 @@ class Preprocessing
 		String str;
 		int[] b=new int[1];
 		double t=0,m=0,n=0;
-		long total;
+		double total;
 		while(s.hasMoreElements()) {
 	        str = (String) s.nextElement();
 	        b=h.get(str);
@@ -134,7 +143,7 @@ class Preprocessing
 	        n=n+(b[1]*b[1]);
 	        }
 		//System.out.println(m);
-		total=Math.round(t/(Math.sqrt(m)*Math.sqrt(n)));
+		total=t/(Math.sqrt(m)*Math.sqrt(n));
 		return total;
 	 }
 }
