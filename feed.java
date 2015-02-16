@@ -1,3 +1,5 @@
+package comtaramt.utils;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -40,9 +42,7 @@ public class feed {
 				System.out.println(" "+i+" : "+s1[i]);
 			}
 			System.out.println("Give the category number");
-			boolean v=true;
-			while(true)
-			String aa=in1.nextLine();
+			String aa = in1.nextLine();
 			String cat=s1[Integer.parseInt(aa)];
 			s5=cat+"//"+s5;
 			ArrayList<ntype> s2=h.get(cat);
@@ -57,13 +57,21 @@ public class feed {
 				System.out.print("Do you like this news item? y or n ");
 				String ss1=in1.nextLine();
 				//System.out.println(ss1);
-					s3.openion=ss1;
-				System.out.println("Type 'e' to exit from this category else press Enter to continue");
-				String s4=in1.nextLine();
+				s3.openion=ss1;
+				String s4="";
+				if(i!=s2.size()-1){
+					System.out.println("Type 'e' to exit from this category else press Enter to continue in this category");
+					s4=in1.nextLine();
+				} 
+				else
+				{
+					System.out.println("No more news in this category");
+					s4="e";
+				}
 				if(s4.equals("e"))
 					break;
 			}
-			System.out.println("Type 'e' to exit from  news feed else press Enter to show category");
+			System.out.println("Type 'e' to exit from  news feed else press Enter to show category list");
 			String s4=in1.nextLine();
 			if(s4.equals("e"))
 				break;
